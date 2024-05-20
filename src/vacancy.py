@@ -49,3 +49,15 @@ class Vacancy:
 
         return instance
 
+    def __lt__(self, other):
+        """Метод для сравнения вакансий"""
+        if self.salary_from:
+            if self.salary_from < other.salary_from:
+                return True
+            else:
+                return False
+        else:
+            if other.salary_from:
+                return False
+
+
