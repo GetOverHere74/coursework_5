@@ -11,6 +11,41 @@ class Vacancy:
         self.validate()
 
     def validate(self):
+        """Функция для валидации по зарплате и требованиям"""
         if not self.salary:
             self.salary_from = 0
             self.salary_to = 0
+            return
+
+        if self.salary['from']:
+            self.salary_from = 0
+        else:
+            self.salary_from = self.salary['from']
+
+        if self.salary['to']:
+            self.salary_to = 0
+        else:
+            self.salary_to = self.salary['to']
+
+        if not self.requirements:
+            self.requirements = ""
+
+        if self.responsibility:
+            self.responsibility = ""
+
+
+    @classmethod
+    def create_vacancies(cls, vacancies_data):
+        instance = []
+        for vac_info in vacancies_data:
+            title = vac_info['name']
+            url = vac_info['alternate_url']
+            salary = vac_info['salary']
+            requirements = vac_info['snippet']['requirement']
+            responsibility = vac_info['snippet']['responsibility']
+            city = vac_info['area']['name']
+            vacancy = cls(title, url, salary, requirements, responsibility, city)
+            instance.append(vacancy)
+
+        return instance
+
