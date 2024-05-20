@@ -4,7 +4,7 @@ from src.worker import JSONWorker
 
 
 def user_interaction():
-    """Метод ля работы с пользователем"""
+    """Метод для работы с пользователем"""
     api_hh = HHApi()
     keyword_user = input('Введите поисковый запрос: ')
     vacancies_info = api_hh.get_vacancies(keyword_user, 100)
@@ -30,6 +30,7 @@ def user_interaction():
             print(vacancy)
     else:
         print(f"По ключевому слову '{search_keyword}' вакансий не найдено.")
+
 
 if __name__ == '__main__':
     user_interaction()
