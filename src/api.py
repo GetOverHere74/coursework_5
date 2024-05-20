@@ -1,3 +1,4 @@
+
 import requests
 from abc import ABC, abstractmethod
 
@@ -22,5 +23,9 @@ class HHApi(BaseAPI):
     def get_vacancies(self, keyword, count):
         self.params.update({'text': keyword})
         response = requests.get(self.url, params=self.params)
+        return response.json()['items']
 
-my_api = HHApi().get_vacancies(user_input, user_count)
+if __name__ == '__main__':
+    my_api = HHApi().get_vacancies()
+    response = my_api.get_vacancies()
+    pass
