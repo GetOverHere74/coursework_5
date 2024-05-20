@@ -1,6 +1,6 @@
-
 class Vacancy:
     """Класс принимает вакансии и фильтрует по названию, ссылке, зарплате, городу, требованиям"""
+
     def __init__(self, title, url, salary, city, requirements, responsibility):
         self.title = title
         self.url = url
@@ -33,10 +33,9 @@ class Vacancy:
         if self.responsibility:
             self.responsibility = ""
 
-
     @classmethod
     def create_vacancies(cls, vacancies_data):
-        instance = []
+        instances = []
         for vac_info in vacancies_data:
             title = vac_info['name']
             url = vac_info['alternate_url']
@@ -44,10 +43,10 @@ class Vacancy:
             requirements = vac_info['snippet']['requirement']
             responsibility = vac_info['snippet']['responsibility']
             city = vac_info['area']['name']
-            vacancy = cls(title, url, salary, requirements, responsibility, city)
-            instance.append(vacancy)
+            vacancy = cls(title, url, salary, city, requirements, responsibility)
+            instances.append(vacancy)
 
-        return instance
+        return instances
 
     def __lt__(self, other):
         """Метод для сравнения вакансий"""
@@ -60,4 +59,5 @@ class Vacancy:
             if other.salary_from:
                 return False
 
-
+    def __str__(self):
+        return f"{self.title}: {self.city}: {self.salary_from}--> {self.salary_to}: {self.url}"
