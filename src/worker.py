@@ -7,6 +7,7 @@ from src.vacancy import Vacancy
 
 class BaseWorker(ABC):
     """Абстрактный класс для работы с вакансиями"""
+
     @abstractmethod
     def add_vacancy(self, vacancy):
         pass
@@ -23,8 +24,10 @@ class BaseWorker(ABC):
     def select_vacancy(self, keyword):
         pass
 
+
 class JSONWorker(BaseWorker):
     """Класс для работы с вакансиями в формате JSON"""
+
     def __init__(self, file_name):
         self.file_path = os.path.join(DATA_PATH, file_name)
         self.prepare()
@@ -37,7 +40,14 @@ class JSONWorker(BaseWorker):
     def add_vacancy(self, vacancy):
         with open(self.file_path, 'r+', encoding='utf-8') as file:
             data = json.load(file)
-            data.append(vars(vacancy))
+            data.append({
+                'title': vacancy.title,
+                'url': vacancy.url,
+                'salary': vacancy.salary,
+                'city': vacancy.city,
+                'requirements': vacancy.requirements,
+                'responsibility': vacancy.responsibility
+            })
             file.seek(0)
             json.dump(data, file, ensure_ascii=False, indent=4)
 
@@ -45,7 +55,14 @@ class JSONWorker(BaseWorker):
         with open(self.file_path, 'r+', encoding='utf-8') as file:
             data = json.load(file)
             for vacancy in vacancies:
-                data.append(vars(vacancy))
+                data.append({
+                    'title': vacancy.title,
+                    'url': vacancy.url,
+                    'salary': vacancy.salary,
+                    'city': vacancy.city,
+                    'requirements': vacancy.requirements,
+                    'responsibility': vacancy.responsibility
+                })
             file.seek(0)
             json.dump(data, file, ensure_ascii=False, indent=4)
 
@@ -59,5 +76,7 @@ class JSONWorker(BaseWorker):
     def select_vacancy(self, keyword):
         with open(self.file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
-            filtered_vacancies = [v for v in data if keyword.lower() in v['title'].lower() or keyword.lower() in v['requirements'].lower() or keyword.lower() in v['responsibility'].lower()]
-            return [Vacancy(**v) for v in filtered_vacancies]
+            filtered_vacancies = [v for v in data if keyword.lower() in v['title'].lower() or keyword.lower() in v[
+                'requirements'].lower() or keyword.lower() in v['responsibility'].lower()]
+            return [Vacancy(v['title'], v['url'], v['salary'], v['city'], v['requirements'], v['responsibility']) for v
+                    in filtered_vacancies]
