@@ -63,4 +63,4 @@ class Vacancy:
     def __str__(self):
         salary_from_str = "Не указана" if self.salary_from == 0 else str(self.salary_from)
         salary_to_str = "Не указана" if self.salary_to == 0 else str(self.salary_to)
-        return f"{self.title}: {self.city}: {salary_from_str} --> {salary_to_str}: {self.url}"
+        return f"{self.title}: {self.city}: Зарплата: {salary_from_str} --> {salary_to_str}: {self.url}"
