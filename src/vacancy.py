@@ -12,26 +12,27 @@ class Vacancy:
 
     def validate(self):
         """Функция для валидации по зарплате и требованиям"""
+
+        if not self.requirements:
+            self.requirements = ""
+
+        if not self.responsibility:
+            self.responsibility = ""
+
         if not self.salary:
             self.salary_from = 0
             self.salary_to = 0
             return
 
-        if self.salary['from']:
+        if self.salary['from'] is None:
             self.salary_from = 0
         else:
             self.salary_from = self.salary['from']
 
-        if self.salary['to']:
+        if self.salary['to'] is None:
             self.salary_to = 0
         else:
             self.salary_to = self.salary['to']
-
-        if not self.requirements:
-            self.requirements = ""
-
-        if self.responsibility:
-            self.responsibility = ""
 
     @classmethod
     def create_vacancies(cls, vacancies_data):
@@ -53,11 +54,13 @@ class Vacancy:
         if self.salary_from:
             if self.salary_from < other.salary_from:
                 return True
-            else:
-                return False
         else:
             if other.salary_from:
-                return False
+                return True
+
+        return False
 
     def __str__(self):
-        return f"{self.title}: {self.city}: {self.salary_from}--> {self.salary_to}: {self.url}"
+        salary_from_str = "Не указана" if self.salary_from == 0 else str(self.salary_from)
+        salary_to_str = "Не указана" if self.salary_to == 0 else str(self.salary_to)
+        return f"{self.title}: {self.city}: {salary_from_str} --> {salary_to_str}: {self.url}"
